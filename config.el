@@ -1,59 +1,41 @@
 
-(setq helm-ag-base-command "ag -SU")
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 
-(defun keyboard-escape-quit ()
-  "Exit the current \"mode\" (in a generalized sense of the word).
-This command can exit an interactive command such as `query-replace',
-can clear out a prefix argument or a region,
-can get out of the minibuffer or other recursive edit,
-cancel the use of the current buffer (for special-purpose buffers),
-or go back to just one window (by deleting all but the selected window)."
-  (interactive)
-  (cond ((eq last-command 'mode-exited) nil)
-        ((region-active-p)
-         (deactivate-mark))
-        ((> (minibuffer-depth) 0)
-         (abort-recursive-edit))
-        (current-prefix-arg
-         nil)
-        ((> (recursion-depth) 0)
-         (exit-recursive-edit))
-        (buffer-quit-function
-         (funcall buffer-quit-function))
-        ((not (one-window-p t))
-         (keyboard-quit))
-        ((string-match "^ \\*" (buffer-name (current-buffer)))
-         (bury-buffer))))
 
-(setq helm-always-two-windows nil
+(setq helm-always-two-windows t
       helm-split-window-in-side-p nil
-      helm-split-window-default-side 'other
+      helm-split-window-default-side 'right
+      helm-ag-base-command "ag -SU"
       )
 
-(add-hook 'helm-mode-hook (lambda ()
-                            (setq toggle-truncate-lines 1)))
+(add-hook 'helm-mode-hook (lambda () (setq toggle-truncate-lines 1)))
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
-(spacemacs/add-to-hooks
- 'bagel-whitespace
- '(
-   c++-mode-hook
-   c-mode-hook
-   csharp-mode-hook
-   )
- )
+(add-hook 'csharp-mode-hook
+          (lambda ()
+            (bagel-tab-indent)
+            (bagel-whitespace)))
 
-(defun bagel-2-space-tab ()
+(add-hook 'c++-mode-mode-hook
+          (lambda ()
+            (bagel-tab-indent)
+            (bagel-whitespace)))
+
+(add-hook 'c-mode-mode-hook
+          (lambda ()
+            (bagel-tab-indent)
+            (bagel-whitespace)))
+
+
+(defun bagel-tab-indent ()
   (setq-local indent-tabs-mode t)
   (setq-local tab-width 2)
   (setq-local c-basic-offset 2)
   (setq-local tab-stop-list (number-sequence 0 20 2))
   )
 
-(add-hook 'csharp-mode-hook 'bagel-2-space-tab)
-(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
 (defun bagel-whitespace ()
   (toggle-truncate-lines 1)
@@ -86,3 +68,27 @@ or go back to just one window (by deleting all but the selected window)."
    )
 
   )
+
+(defun keyboard-escape-quit ()
+  "Exit the current \"mode\" (in a generalized sense of the word).
+This command can exit an interactive command such as `query-replace',
+can clear out a prefix argument or a region,
+can get out of the minibuffer or other recursive edit,
+cancel the use of the current buffer (for special-purpose buffers),
+or go back to just one window (by deleting all but the selected window)."
+  (interactive)
+  (cond ((eq last-command 'mode-exited) nil)
+        ((region-active-p)
+         (deactivate-mark))
+        ((> (minibuffer-depth) 0)
+         (abort-recursive-edit))
+        (current-prefix-arg
+         nil)
+        ((> (recursion-depth) 0)
+         (exit-recursive-edit))
+        (buffer-quit-function
+         (funcall buffer-quit-function))
+        ((not (one-window-p t))
+         (keyboard-quit))
+        ((string-match "^ \\*" (buffer-name (current-buffer)))
+         (bury-buffer))))
