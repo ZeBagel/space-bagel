@@ -26,11 +26,12 @@
             (setq flycheck-clang-language-standard "c++11")
             ))
 
-(add-hook 'cmode-mode-hook
+(add-hook 'c-mode-mode-hook
           (lambda ()
             (bagel-tabs)
             (bagel-whitespace)
             ))
+
 (defun bagel-tabs ()
   (setq-local indent-tabs-mode t)
   (setq-local tab-width 2)
