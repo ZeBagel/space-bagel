@@ -21,31 +21,33 @@
 (custom-set-faces
  '(helm-source-header ((t (:height 0.1)))))
 
-(add-hook 'helm-mode-hook (lambda () (setq toggle-truncate-lines 1)))
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+(add-hook 'helm-mode-hook (lambda () (setq toggle-truncate-lines 1)))
 
 (add-hook 'csharp-mode-hook
           (lambda ()
             (bagel-tab-indent)
-            (bagel-whitespace)))
+            (bagel-whitespace)
+            ))
 
-(add-hook 'c++-mode-mode-hook
+(add-hook 'c++-mode-hook
           (lambda ()
-            (bagel-tab-indent)
-            (bagel-whitespace)))
+            (bagel-tabs)
+            (bagel-whitespace)
+            (setq flycheck-clang-language-standard "c++11")
+            ))
 
 (add-hook 'c-mode-mode-hook
           (lambda ()
-            (bagel-tab-indent)
-            (bagel-whitespace)))
+            (bagel-tabs)
+            (bagel-whitespace)
+            ))
 
-
-(defun bagel-tab-indent ()
+(defun bagel-tabs ()
   (setq-local indent-tabs-mode t)
   (setq-local tab-width 2)
   (setq-local c-basic-offset 2)
   (setq-local tab-stop-list (number-sequence 0 20 2)))
-
 
 (defun bagel-whitespace ()
   (toggle-truncate-lines 1)
