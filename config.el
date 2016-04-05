@@ -1,25 +1,20 @@
+(defun server-ensure-safe-dir (dir) "Noop" t)
 
-(setq
- auto-save-default nil
- make-backup-files nil
- initial-major-mode 'emacs-lisp-mode)
+(setq auto-save-default nil
+      make-backup-files nil
+      initial-major-mode 'emacs-lisp-mode)
 
 (setq-default buffer-file-coding-system 'utf-8-unix)
 
+(setq helm-always-two-windows nil
+      helm-split-window-in-side-p nil
+      helm-split-window-default-side 'right
+      helm-ag-base-command "ag -SU"
+      helm-display-header-line nil
+      helm-ff-skip-boring-files t
+      helm-boring-file-regexp-list '("\\.$" "\\.\\.$" "\\.meta$"))
 
-(setq
- helm-always-two-windows nil
- helm-split-window-in-side-p nil
- helm-split-window-default-side 'right
- helm-ag-base-command "ag -SU"
- helm-display-header-line nil
- helm-ff-skip-boring-files t
- helm-boring-file-regexp-list '("\\.$" "\\.\\.$" "\\.meta$")
-)
-
-;;(set-face-attribute 'helm-source-header nil :height 0.1)
-(custom-set-faces
- '(helm-source-header ((t (:height 0.1)))))
+(custom-set-faces '(helm-source-header ((t (:height 0.1)))))
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 (add-hook 'helm-mode-hook (lambda () (setq toggle-truncate-lines 1)))
