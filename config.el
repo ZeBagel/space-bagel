@@ -1,27 +1,21 @@
 
-(setq helm-ag-base-command "ag -SU")
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 
 
-(setq helm-always-two-windows nil
+(setq helm-always-two-windows t
       helm-split-window-in-side-p nil
-      helm-split-window-default-side 'other
+      helm-split-window-default-side 'right
+      helm-ag-base-command "ag -SU"
       )
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 (add-hook 'helm-mode-hook (lambda () (setq toggle-truncate-lines 1)))
 
-(add-hook 'cmode-mode-hook
-          (lambda ()
-            (bagel-tabs)
-            (bagel-whitespace)
-            ))
-
 (add-hook 'csharp-mode-hook
           (lambda ()
-            (bagel-tabs)
+            (bagel-tab-indent)
             (bagel-whitespace)
             ))
 
@@ -32,12 +26,16 @@
             (setq flycheck-clang-language-standard "c++11")
             ))
 
-
+(add-hook 'cmode-mode-hook
+          (lambda ()
+            (bagel-tabs)
+            (bagel-whitespace)
+            ))
 (defun bagel-tabs ()
   (setq-local indent-tabs-mode t)
   (setq-local tab-width 2)
-  (setq-local tab-stop-list '(2 4 6))
   (setq-local c-basic-offset 2)
+  (setq-local tab-stop-list (number-sequence 0 20 2))
   )
 
 (defun bagel-whitespace ()
