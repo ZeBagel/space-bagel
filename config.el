@@ -1,12 +1,15 @@
 (defun server-ensure-safe-dir (dir) "Noop" t)
 
+(spacemacs/declare-prefix-for-mode 'emacs-lisp-mode "me" "eval")
+(spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "ep" 'eval-print-last-sexp)
+
 (setq auto-save-default nil
       make-backup-files nil
       initial-major-mode 'emacs-lisp-mode)
 
 (setq-default buffer-file-coding-system 'utf-8-unix)
 
-(setq helm-always-two-windows nil
+(setq helm-always-two-windows t
       helm-split-window-in-side-p nil
       helm-split-window-default-side 'right
       helm-ag-base-command "ag -SU"
